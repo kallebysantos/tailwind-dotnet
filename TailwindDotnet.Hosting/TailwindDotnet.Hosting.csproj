@@ -1,13 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\TailwindDotnet.Core\TailwindDotnet.Core.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
+    <Description>
+      Helpers for launching the TailwindCss CLI automatically when the application starts in ASP.NETCore.
+    </Description>
+
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <IsTrimmable>true</IsTrimmable>
+    <EnableAOTAnalyzer>false</EnableAOTAnalyzer>
+    <!-- This is ok since this assembly is not referenced by any application but it is loaded as a hosting startup
+    assembly for apps referencing this package-->
   </PropertyGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <ProjectReference Include="..\TailwindDotnet.Core\TailwindDotnet.Core.csproj" />
+  </ItemGroup>
 </Project>
