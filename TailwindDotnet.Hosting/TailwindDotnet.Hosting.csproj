@@ -10,13 +10,41 @@
 
     <IsTrimmable>true</IsTrimmable>
     <EnableAOTAnalyzer>false</EnableAOTAnalyzer>
+    
     <!-- This is ok since this assembly is not referenced by any application but it is loaded as a hosting startup
     assembly for apps referencing this package-->
   </PropertyGroup>
 
+  <Import Project="Build/Tasks/SetupExecutable.Props" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference 
+      Include="Microsoft.Build.Framework" 
+      Version="17.7.2"
+      CopyLocal="false" 
+      Publish="False"
+      ExcludeAssets="runtime"/>
+
+    <PackageReference 
+      Include="Microsoft.Build.Utilities.Core" 
+      Version="17.7.2"
+      CopyLocal="false"
+      Publish="False"
+      ExcludeAssets="runtime"/>
+
     <ProjectReference Include="..\TailwindDotnet.Core\TailwindDotnet.Core.csproj" />
+
+    <None 
+      Pack="true"
+      Include="Build/Tasks/SetupExecutable.Props"
+      PackagePath="Build/Tasks/SetupExecutable.Props" />
+    <None 
+      Pack="true"
+      Include="Build/Tasks/SetupExecutable.Targets"
+      PackagePath="Build/Tasks/SetupExecutable.Targets" />
   </ItemGroup>
+
+  <Import Project="Build/Tasks/SetupExecutable.Targets" />
+
 </Project>
