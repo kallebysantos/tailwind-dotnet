@@ -1,5 +1,4 @@
 using Microsoft.Build.Framework;
-using TailwindDotnet.Core;
 
 namespace TailwindDotnet.Hosting;
 

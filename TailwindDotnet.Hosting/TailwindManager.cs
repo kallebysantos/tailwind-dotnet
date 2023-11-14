@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace TailwindDotnet.Core;
+namespace TailwindDotnet.Hosting;
 
 public sealed class TailwindManager : IDisposable
 {

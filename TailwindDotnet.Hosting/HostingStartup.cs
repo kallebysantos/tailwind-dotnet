@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using TailwindDotnet.Core;
 
 [assembly: HostingStartup(typeof(TailwindDotnet.Hosting.SpaHostingStartup))]
 

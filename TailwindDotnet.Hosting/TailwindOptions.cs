@@ -1,4 +1,4 @@
-namespace TailwindDotnet.Core;
+namespace TailwindDotnet.Hosting;
 
 public class TailwindOptions
 {
