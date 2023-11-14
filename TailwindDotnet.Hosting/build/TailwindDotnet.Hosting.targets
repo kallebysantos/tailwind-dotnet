@@ -1,0 +1,30 @@
+<Project>
+    <Target Name="SetupExecutableTaskProperties" AfterTargets="Build" >
+        <PropertyGroup>
+            <_TailwindExecutableFolder>$(_BuildFolder)</_TailwindExecutableFolder>
+            <_TailwindExecutablePath>$(TailwindExecutablePath)</_TailwindExecutablePath>
+            <_TailwindVersion>$(TailwindVersion)</_TailwindVersion>
+        </PropertyGroup>
+    </Target>
+
+    <Target 
+        Name="SetupExecutableTask"
+        DependsOnTargets="SetupExecutableTaskProperties"
+        AfterTargets="Build"
+    >        
+        <!-- Condition="'$(Configuration)' == 'Debug' And !Exists('$(_TailwindExecutablePath)')" -->
+        <SetupExecutableTask 
+            TailwindExecutableFolder="$(_TailwindExecutableFolder)"
+            TailwindVersion="$(_TailwindVersion)"
+        >
+            <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
+        </SetupExecutableTask>
+        <ItemGroup>
+            <Content
+                Include="$(_TailwindExecutablePath)" 
+                CopyToOutputDirectory="PreserveNewest" 
+                CopyToPublishDirectory="PreserveNewest"
+            />
+        </ItemGroup>
+    </Target>
+</Project>

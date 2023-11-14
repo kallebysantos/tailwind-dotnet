@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <_BuildFolder>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', 'bin', 'Debug','net7.0'))</_BuildFolder>
+        <_BuildAssemblyFile>$(_BuildFolder)\$(MSBuildThisFileName).dll</_BuildAssemblyFile>
+    </PropertyGroup>
+
+    <UsingTask 
+        TaskName="TailwindDotnet.Hosting.SetupExecutableTask" 
+        AssemblyFile="$(_BuildAssemblyFile)"
+    />
+</Project>
+

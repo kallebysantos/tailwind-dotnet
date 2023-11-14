@@ -17,25 +17,16 @@ public sealed class TailwindManager : IDisposable
         _options = options;
     }
 
-    public static async Task<string?> Download(string tailwindExecutableUrl)
+    public static async Task<string?> Download(string tailwindExecutableUrl, string tailwindExecutablePath)
     {
-        var (_, ext) = GetTailwindExecutablePlatform();
-
-        var executableFilePath = Path.Combine(AppContext.BaseDirectory, "tailwindcss");
-        var executableFilename = executableFilePath + ext;
-
         using var httpClient = new HttpClient();
-
-        Console.WriteLine($"Downloading tailwindcss: {tailwindExecutableUrl}");
 
         var response = (await httpClient.GetAsync(tailwindExecutableUrl)).EnsureSuccessStatusCode();
 
-        using var fileStream = File.Create(path: executableFilename);
+        using var fileStream = File.Create(path: tailwindExecutablePath);
         await response.Content.CopyToAsync(fileStream);
 
-        Console.WriteLine($"Download finished: {executableFilename}");
-
-        return executableFilename;
+        return tailwindExecutablePath;
     }
 
     // Make the downloaded executable file executable (Linux/macOS).
@@ -97,10 +88,12 @@ public sealed class TailwindManager : IDisposable
             return null;
         }
 
-        if(version == "latest") {
+        if (version == "latest")
+        {
             baseUrl += "/latest/download";
         }
-        else{
+        else
+        {
             baseUrl += $"/download/{version}";
         }
 

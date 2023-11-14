@@ -1,50 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <Title>TailwindDotnet.Hosting</Title>
     <Description>
       Helpers for launching the TailwindCss CLI automatically when the application starts in ASP.NETCore.
     </Description>
+    <Authors>Kalleby Santos</Authors>
+    <PackageTags>MyTags</PackageTags>
+    <Copyright>Copyright ©Contoso 2022</Copyright>
 
-    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-
     <IsTrimmable>true</IsTrimmable>
     <EnableAOTAnalyzer>false</EnableAOTAnalyzer>
-    
-    <!-- This is ok since this assembly is not referenced by any application but it is loaded as a hosting startup
-    assembly for apps referencing this package-->
+    <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+
+    <TailwindVersion>lastest</TailwindVersion>
   </PropertyGroup>
 
-  <Import Project="Build/Tasks/SetupExecutable.Props" />
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference 
-      Include="Microsoft.Build.Framework" 
-      Version="17.7.2"
-      CopyLocal="false" 
-      Publish="False"
-      ExcludeAssets="runtime"/>
-
-    <PackageReference 
-      Include="Microsoft.Build.Utilities.Core" 
-      Version="17.7.2"
-      CopyLocal="false"
-      Publish="False"
-      ExcludeAssets="runtime"/>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.7.2" PrivateAssets="All" />
 
     <ProjectReference Include="..\TailwindDotnet.Core\TailwindDotnet.Core.csproj" />
 
-    <None 
-      Pack="true"
-      Include="Build/Tasks/SetupExecutable.Props"
-      PackagePath="Build/Tasks/SetupExecutable.Props" />
-    <None 
-      Pack="true"
-      Include="Build/Tasks/SetupExecutable.Targets"
-      PackagePath="Build/Tasks/SetupExecutable.Targets" />
   </ItemGroup>
 
-  <Import Project="Build/Tasks/SetupExecutable.Targets" />
+  <ItemGroup>
+    <Content Include="build/TailwindDotnet.Hosting.props" PackagePath="/build"/>
+    <Content Include="build/TailwindDotnet.Hosting.targets" PackagePath="/build"/>
+  </ItemGroup>
 
 </Project>

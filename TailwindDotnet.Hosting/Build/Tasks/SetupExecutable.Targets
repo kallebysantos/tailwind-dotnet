@@ -1,5 +1,0 @@
-<Project>
-    <Target Name="SetupExecutableTask" AfterTargets="Build">
-        <SetupExecutableTask />
-    </Target>
-</Project>
