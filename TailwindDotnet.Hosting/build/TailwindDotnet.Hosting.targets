@@ -1,23 +1,16 @@
 <Project>
-    <PropertyGroup>
+    <PropertyGroup Label="TailwindDotnet.Hosting Properties">
         <_TailwindExecutableFolder>$(MSBuildProjectDirectory)/$(OutputPath)</_TailwindExecutableFolder>
-        <_TailwindExecutablePath>$(TailwindExecutablePath)</_TailwindExecutablePath>
-        <_TailwindVersion>$(TailwindVersion)</_TailwindVersion>
-
+        
+        <TailwindVersion Condition="'$(TailwindWatch)' == ''">latest</TailwindVersion>
         <TailwindWatch Condition="'$(TailwindWatch)' == ''">true</TailwindWatch>
-        <TailwindInputCssFile Condition="'$(TailwindInputCssFile)' == ''">wwwroot/styles.css</TailwindInputCssFile>
-        <TailwindOutputCssFile Condition="'$(TailwindOutputCssFile)' == ''">wwwroot/dist/styles.css</TailwindOutputCssFile>
+
+        <TailwindInputCssFile Condition="'$(TailwindInputCssFile)' == ''">wwwroot/app.css</TailwindInputCssFile>
+        <TailwindOutputCssFile Condition="'$(TailwindOutputCssFile)' == ''">wwwroot/index.css</TailwindOutputCssFile>
+
         <TailwindConfigFile Condition="'$(TailwindConfigFile)' == ''">tailwind.config.js</TailwindConfigFile>
 
         <_TailwindConfig>$(OutputPath)tailwind.props.json</_TailwindConfig>
-        
-        <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)').Replace('\','\\'))</_TailwindWorkingDirectory>
-        
-        <_TailwindInputCssFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindInputCssFile)').Replace('\','\\'))</_TailwindInputCssFile>
-        
-        <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindOutputCssFile)').Replace('\','\\'))</_TailwindOutputCssFile>
-        
-        <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindConfigFile)').Replace('\','\\'))</_TailwindTailwindConfigFile>
     </PropertyGroup>
 
     <!--Download Tailwindcss executable-->
@@ -28,7 +21,7 @@
     >   
         <SetupExecutableTask 
             TailwindExecutableFolder="$(_TailwindExecutableFolder)"
-            TailwindVersion="$(_TailwindVersion)"
+            TailwindVersion="$(TailwindVersion)"
         >
             <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
         </SetupExecutableTask>
@@ -44,6 +37,20 @@
 
     <!--Create Tailwind configuration props file-->
     <Target Name="WriteTailwindConfiguration" AfterTargets="SetupExecutableTask" DependsOnTargets="SetupExecutableTask">
+        <PropertyGroup>
+            <_TailwindBaseWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindBaseWorkingDirectory>
+                
+            <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)').Replace('\','\\'))</_TailwindWorkingDirectory>
+            
+            <_TailwindExecutablePath>$([System.IO.Path]::Combine('$(_TailwindExecutablePath)').Replace('\','\\'))</_TailwindExecutablePath>
+        
+            <_TailwindInputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindInputCssFile)').Replace('\','\\'))</_TailwindInputCssFile>
+            
+            <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindOutputCssFile)').Replace('\','\\'))</_TailwindOutputCssFile>
+            
+            <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindConfigFile)').Replace('\','\\'))</_TailwindTailwindConfigFile>
+        </PropertyGroup>
+        
         <ItemGroup>
             <_TailwindConfigLines Include="{" />
             <_TailwindConfigLines Include="&quot;TailwindProps&quot;:{" />

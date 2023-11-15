@@ -1,21 +1,23 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TailwindDotnet.Hosting;
-
-internal sealed class TailwindStartupFilter : IStartupFilter
+namespace TailwindDotnet.Hosting
 {
-    private readonly TailwindManager _tailwindManager;
-
-    public TailwindStartupFilter(TailwindManager tailwindManager)
+    internal sealed class TailwindStartupFilter : IStartupFilter
     {
-        _tailwindManager = tailwindManager ?? throw new ArgumentNullException(nameof(tailwindManager));
-    }
+        private readonly TailwindManager _tailwindManager;
 
-    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
-    {
-        _tailwindManager.LaunchTailwindProcess();
+        public TailwindStartupFilter(TailwindManager tailwindManager)
+        {
+            _tailwindManager = tailwindManager ?? throw new ArgumentNullException(nameof(tailwindManager));
+        }
 
-        return builder => next(builder);
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        {
+            _tailwindManager.LaunchTailwindProcess();
+
+            return builder => next(builder);
+        }
     }
 }

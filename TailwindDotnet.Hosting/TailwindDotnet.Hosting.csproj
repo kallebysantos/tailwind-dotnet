@@ -1,30 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
     <Version>1.0.0</Version>
-    <Title>TailwindDotnet.Hosting</Title>
-    <Description>
-      Helpers for launching the TailwindCss CLI automatically when the application starts in ASP.NETCore.
-    </Description>
-    <Authors>Kalleby Santos</Authors>
-    <PackageTags>MyTags</PackageTags>
-    <Copyright>Copyright ©Contoso 2022</Copyright>
-
-    <ImplicitUsings>enable</ImplicitUsings>
     <IsTrimmable>true</IsTrimmable>
     <EnableAOTAnalyzer>false</EnableAOTAnalyzer>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
 
-    <TailwindVersion>lastest</TailwindVersion>
+    <Title>TailwindDotnet.Hosting</Title>
+    <Authors>Kalleby Santos</Authors>
+    <Product>$(MSBuildProjectName)</Product>
+    <PackageId>$(MSBuildProjectName)</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kallebysantos/tailwind-dotnet</PackageProjectUrl>
+    <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
+    <Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.7.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -32,14 +33,14 @@
     <Content Include="build/TailwindDotnet.Hosting.targets" PackagePath="/build" />
   </ItemGroup>
 
-<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
-        <ItemGroup><!-- The dependencies of your MSBuild task must be packaged inside the package, they cannot be expressed as normal PackageReferences -->
-            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
-        </ItemGroup>
-    </Target><!-- This target adds the generated deps.json file to our package output -->
-    <Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
-        <ItemGroup>
-            <BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
-        </ItemGroup>
-    </Target>
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+      <ItemGroup><!-- The dependencies of your MSBuild task must be packaged inside the package, they cannot be expressed as normal PackageReferences -->
+          <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+      </ItemGroup>
+  </Target><!-- This target adds the generated deps.json file to our package output -->
+  <Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
+      <ItemGroup>
+          <BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
+      </ItemGroup>
+  </Target>
 </Project>

@@ -1,40 +1,51 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: HostingStartup(typeof(TailwindDotnet.Hosting.TailwindHostingStartup))]
 
-namespace TailwindDotnet.Hosting;
-
-internal sealed class TailwindHostingStartup : IHostingStartup
+namespace TailwindDotnet.Hosting
 {
-    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Configuration object's public properties are preserved.")]
-    static void ConfigureOptions<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IServiceCollection services, IConfigurationSection section)
-     where T : class
+    internal sealed class TailwindHostingStartup : IHostingStartup
     {
-        services.Configure<T>(section);
-    }
-
-    public void Configure(IWebHostBuilder builder)
-    {
-        var tailwindPropsFile = Path.Combine(AppContext.BaseDirectory, "tailwind.props.json");
-        if (!File.Exists(tailwindPropsFile))
+        # if NET6_0_OR_GREATER
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Configuration object's public properties are preserved.")] 
+        static void ConfigureOptions<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IServiceCollection services, IConfigurationSection section) where T : class
         {
-            return;
+            services.Configure<T>(section);
         }
-
-
-        builder.ConfigureServices(services =>
+        # else
+        static void ConfigureOptions<T>(IServiceCollection services, IConfigurationSection section) where T : class
+        {
+            services.Configure<T>(section);
+        }
+        # endif
+        
+        public void Configure(IWebHostBuilder builder)
+        {
+            var tailwindPropsFile = Path.Combine(AppContext.BaseDirectory, "tailwind.props.json");
+            if (!File.Exists(tailwindPropsFile))
             {
-                Console.WriteLine(tailwindPropsFile);
-                var configuration = new ConfigurationBuilder().AddJsonFile(tailwindPropsFile).Build();
-
-                ConfigureOptions<TailwindOptions>(services, configuration.GetSection("TailwindProps"));
-
-                services.AddSingleton<TailwindManager>();
-                services.AddSingleton<IStartupFilter, TailwindStartupFilter>();
+                return;
             }
-        );
+
+
+            builder.ConfigureServices(services =>
+                {
+                    var configuration = new ConfigurationBuilder().AddJsonFile(tailwindPropsFile).Build();
+
+                    ConfigureOptions<TailwindOptions>(services, configuration.GetSection("TailwindProps"));
+
+                    services.AddSingleton<TailwindManager>();
+                    services.AddSingleton<IStartupFilter, TailwindStartupFilter>();
+                }
+            );
+
+           
+            
+            }
     }
 }

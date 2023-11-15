@@ -1,17 +1,21 @@
-namespace TailwindDotnet.Hosting;
+using System;
+using System.IO;
 
-public class TailwindOptions
+namespace TailwindDotnet.Hosting
 {
-    public string InputCssFile { get; set; } = "input.css";
+    public class TailwindOptions
+    {
+        public string InputCssFile { get; set; } = "input.css";
 
-    public string OutputCssFile { get; set; } = "output.css";
+        public string OutputCssFile { get; set; } = "output.css";
 
-    public string ConfigFile { get; set; } = "tailwind.config.js";
+        public string ConfigFile { get; set; } = "tailwind.config.js";
 
-    public bool IsWatchEnabled { get; set; } = false;
+        public bool IsWatchEnabled { get; set; } = false;
 
-    public string WorkingDirectory { get; set; } = string.Empty;
+        public string WorkingDirectory { get; set; } = string.Empty;
 
-    public string ExecutablePath { get; set; } =
-        Path.Combine(AppContext.BaseDirectory, "tailwindcss");
+        public string ExecutablePath { get; set; } =
+            Path.Combine(AppContext.BaseDirectory, "tailwindcss");
+    }
 }
