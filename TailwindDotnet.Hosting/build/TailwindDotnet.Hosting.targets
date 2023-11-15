@@ -1,30 +1,73 @@
 <Project>
-    <Target Name="SetupExecutableTaskProperties" AfterTargets="Build" >
-        <PropertyGroup>
-            <_TailwindExecutableFolder>$(_BuildFolder)</_TailwindExecutableFolder>
-            <_TailwindExecutablePath>$(TailwindExecutablePath)</_TailwindExecutablePath>
-            <_TailwindVersion>$(TailwindVersion)</_TailwindVersion>
-        </PropertyGroup>
-    </Target>
+    <PropertyGroup>
+        <_TailwindExecutableFolder>$(MSBuildProjectDirectory)/$(OutputPath)</_TailwindExecutableFolder>
+        <_TailwindExecutablePath>$(TailwindExecutablePath)</_TailwindExecutablePath>
+        <_TailwindVersion>$(TailwindVersion)</_TailwindVersion>
 
+        <TailwindWatch Condition="'$(TailwindWatch)' == ''">true</TailwindWatch>
+        <TailwindInputCssFile Condition="'$(TailwindInputCssFile)' == ''">wwwroot/styles.css</TailwindInputCssFile>
+        <TailwindOutputCssFile Condition="'$(TailwindOutputCssFile)' == ''">wwwroot/dist/styles.css</TailwindOutputCssFile>
+        <TailwindConfigFile Condition="'$(TailwindConfigFile)' == ''">tailwind.config.js</TailwindConfigFile>
+
+        <_TailwindConfig>$(OutputPath)tailwind.props.json</_TailwindConfig>
+        
+        <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)').Replace('\','\\'))</_TailwindWorkingDirectory>
+        
+        <_TailwindInputCssFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindInputCssFile)').Replace('\','\\'))</_TailwindInputCssFile>
+        
+        <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindOutputCssFile)').Replace('\','\\'))</_TailwindOutputCssFile>
+        
+        <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindWorkingDirectory)', '$(TailwindConfigFile)').Replace('\','\\'))</_TailwindTailwindConfigFile>
+    </PropertyGroup>
+
+    <!--Download Tailwindcss executable-->
     <Target 
         Name="SetupExecutableTask"
-        DependsOnTargets="SetupExecutableTaskProperties"
         AfterTargets="Build"
-    >        
-        <!-- Condition="'$(Configuration)' == 'Debug' And !Exists('$(_TailwindExecutablePath)')" -->
+        Condition="!Exists('$(_TailwindExecutablePath)')"
+    >   
         <SetupExecutableTask 
             TailwindExecutableFolder="$(_TailwindExecutableFolder)"
             TailwindVersion="$(_TailwindVersion)"
         >
             <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
         </SetupExecutableTask>
+
         <ItemGroup>
             <Content
                 Include="$(_TailwindExecutablePath)" 
                 CopyToOutputDirectory="PreserveNewest" 
-                CopyToPublishDirectory="PreserveNewest"
+                CopyToPublishDirectory="Never"
             />
         </ItemGroup>
     </Target>
+
+    <!--Create Tailwind configuration props file-->
+    <Target Name="WriteTailwindConfiguration" AfterTargets="SetupExecutableTask" DependsOnTargets="SetupExecutableTask">
+        <ItemGroup>
+            <_TailwindConfigLines Include="{" />
+            <_TailwindConfigLines Include="&quot;TailwindProps&quot;:{" />
+            <_TailwindConfigLines Include="&quot;ExecutablePath&quot;:&quot;$(_TailwindExecutablePath)&quot;," />
+            <_TailwindConfigLines Include="&quot;IsWatchEnabled&quot;:&quot;$(TailwindWatch)&quot;," />
+            <_TailwindConfigLines Include="&quot;WorkingDirectory&quot;:&quot;$(_TailwindWorkingDirectory)&quot;," />
+            <_TailwindConfigLines Include="&quot;InputCssFile&quot;:&quot;$(_TailwindInputCssFile)&quot;," />
+            <_TailwindConfigLines Include="&quot;OutputCssFile&quot;:&quot;$(_TailwindOutputCssFile)&quot;," />
+            <_TailwindConfigLines Include="&quot;ConfigFile&quot;:&quot;$(_TailwindTailwindConfigFile)&quot;" />
+            <_TailwindConfigLines Include="  }" />
+            <_TailwindConfigLines Include="}" />
+        </ItemGroup>
+
+        <WriteLinesToFile File="$(_TailwindConfig)" Lines="@(_TailwindConfigLines)" WriteOnlyWhenDifferent="true" Overwrite="true" />
+
+        <ItemGroup>
+            <ContentWithTargetPath Include="$(_TailwindConfig)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" TargetPath="tailwind.props.json" />
+            <FileWrites Include="$(_TailwindConfig)" />
+            <Message Text="Writing Tailwind config file $(_TailwindConfig)" Importance="high"/>
+        </ItemGroup>
+    </Target>
+     
+    <!--The generated file is deleted after a general clean. It will force the regeneration on rebuild-->
+    <Target Name="AfterClean">
+		<Delete Files="$(_TailwindConfig)" />
+	</Target>
 </Project>
