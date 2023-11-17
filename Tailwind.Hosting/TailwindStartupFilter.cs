@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TailwindDotnet.Hosting
+namespace Tailwind.Hosting
 {
     internal sealed class TailwindStartupFilter : IStartupFilter
     {

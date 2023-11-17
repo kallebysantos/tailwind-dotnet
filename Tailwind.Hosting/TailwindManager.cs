@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace TailwindDotnet.Hosting
+namespace Tailwind.Hosting
 {
     public sealed class TailwindManager : IDisposable
     {
@@ -65,10 +65,10 @@ namespace TailwindDotnet.Hosting
                 Architecture.Arm => "armv7",
                 Architecture.Arm64 => "arm64",
 
-                #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
                 Architecture.Armv6 => "armv7",
-                #endif
-                
+#endif
+
                 _ => default
             };
 
@@ -171,12 +171,12 @@ namespace TailwindDotnet.Hosting
                         // Compared to performing Ctrl+C on the window or closing the window for the newly spawned
                         // process which seems to do the right thing.
                         if (!_tailwindProcess.CloseMainWindow())
-                        {   
-                            #if NET6_0_OR_GREATER
+                        {
+#if NET6_0_OR_GREATER
                             _tailwindProcess.Kill(entireProcessTree: true);
-                            #else
+#else
                             _tailwindProcess.Kill();
-                            #endif
+#endif
 
                             _tailwindProcess = null;
                         }

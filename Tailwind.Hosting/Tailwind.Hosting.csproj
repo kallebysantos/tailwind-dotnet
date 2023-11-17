@@ -7,8 +7,9 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
 
-    <Title>TailwindDotnet.Hosting</Title>
+    <Title>Tailwind.Hosting</Title>
     <Authors>Kalleby Santos</Authors>
+    <Company>kallebysantos</Company>
     <Product>$(MSBuildProjectName)</Product>
     <PackageId>$(MSBuildProjectName)</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,6 +17,7 @@
     <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
     <Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
   </PropertyGroup>
@@ -29,8 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="build/TailwindDotnet.Hosting.props" PackagePath="/build" />
-    <Content Include="build/TailwindDotnet.Hosting.targets" PackagePath="/build" />
+    <Content Include="build/Tailwind.Hosting.props" PackagePath="/build" />
+    <Content Include="build/Tailwind.Hosting.targets" PackagePath="/build" />
+    <None Include="./README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">

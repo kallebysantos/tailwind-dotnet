@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 
-namespace TailwindDotnet.Hosting
+namespace Tailwind.Hosting
 {
     public class SetupExecutableTask : Microsoft.Build.Utilities.Task
     {

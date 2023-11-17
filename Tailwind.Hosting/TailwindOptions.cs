@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace TailwindDotnet.Hosting
+namespace Tailwind.Hosting
 {
     public class TailwindOptions
     {

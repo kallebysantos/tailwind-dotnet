@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <NupkgsDirectory>$(MSBuildThisFileDirectory)nupkgs</NupkgsDirectory>
+    <RestoreAdditionalProjectSources>$(NupkgsDirectory)</RestoreAdditionalProjectSources>
+    <PackageOutputPath>$(NupkgsDirectory)</PackageOutputPath>
+  </PropertyGroup>
+</Project>

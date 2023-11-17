@@ -1,0 +1,1 @@
+rm -R /home/kalleby/.nuget/packages/tailwind.hosting; dotnet remove examples/Blazor package Tailwind.Hosting; dotnet pack Tailwind.Hosting; dotnet add examples/Blazor package Tailwind.Hosting; dotnet run --project examples/Blazor
