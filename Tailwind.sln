@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{5D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor", "examples\Blazor\Blazor.csproj", "{7358A5E5-68A2-4767-8FEF-F10886ACAD47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tailwind.Hosting", "Tailwind.Hosting\Tailwind.Hosting.csproj", "{28F3EF2A-B2A2-4FF9-AFFC-29433C979B73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{7358A5E5-68A2-4767-8FEF-F10886ACAD47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7358A5E5-68A2-4767-8FEF-F10886ACAD47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7358A5E5-68A2-4767-8FEF-F10886ACAD47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F3EF2A-B2A2-4FF9-AFFC-29433C979B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F3EF2A-B2A2-4FF9-AFFC-29433C979B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F3EF2A-B2A2-4FF9-AFFC-29433C979B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F3EF2A-B2A2-4FF9-AFFC-29433C979B73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7358A5E5-68A2-4767-8FEF-F10886ACAD47} = {5D8C1823-0A68-4E21-901F-1EB2F497299F}

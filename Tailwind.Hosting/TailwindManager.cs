@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Tailwind.Hosting
 {
@@ -123,7 +123,7 @@ namespace Tailwind.Hosting
                 _options.IsWatchEnabled ? "--watch" : string.Empty,
             };
 
-            var arguments = string.Join(' ', commandArguments);
+            var arguments = string.Join(" ", commandArguments);
 
             try
             {

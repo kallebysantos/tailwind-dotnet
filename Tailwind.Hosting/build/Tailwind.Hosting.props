@@ -1,12 +1,11 @@
 <Project>
-    <PropertyGroup>
-        <_BuildFolder>$([System.IO.Path]::Combine('$(MSBuildThisFileDirectory)', '../lib', 'netstandard2.1'))</_BuildFolder>
-        <_BuildAssemblyFile>$(_BuildFolder)\$(MSBuildThisFileName).dll</_BuildAssemblyFile>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TailwindHostingAssembly Condition="'$(TailwindHostingAssembly)' == ''">..\tasks\netstandard2.0\$(MSBuildThisFileName).dll</TailwindHostingAssembly>
+	</PropertyGroup>
 
     <UsingTask 
         TaskName="Tailwind.Hosting.SetupExecutableTask" 
-        AssemblyFile="$(_BuildAssemblyFile)"
+        AssemblyFile="$(TailwindHostingAssembly)"
     />
 </Project>
 

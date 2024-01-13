@@ -1,49 +1,59 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
-    <Version>1.0.0</Version>
-    <IsTrimmable>true</IsTrimmable>
-    <EnableAOTAnalyzer>false</EnableAOTAnalyzer>
-    <Nullable>enable</Nullable>
-    <IsPackable>true</IsPackable>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<LangVersion>preview</LangVersion>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<GenerateDependencyFile>true</GenerateDependencyFile>
+		<DebugType>embedded</DebugType>
+		<DevelopmentDependency>true</DevelopmentDependency>
+		<Nullable>enable</Nullable>
+		<IsPackable>true</IsPackable>
+		<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
 
-    <Title>Tailwind.Hosting</Title>
-    <Authors>Kalleby Santos</Authors>
-    <Company>kallebysantos</Company>
-    <Product>$(MSBuildProjectName)</Product>
-    <PackageId>$(MSBuildProjectName)</PackageId>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/kallebysantos/tailwind-dotnet</PackageProjectUrl>
-    <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
-    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
-    <Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
-  </PropertyGroup>
+		<Title>Tailwind.Hosting</Title>
+		<Version>1.0.1</Version>
+		<Authors>Kalleby Santos</Authors>
+		<Company>kallebysantos</Company>
+		<Product>$(MSBuildProjectName)</Product>
+		<PackageId>$(MSBuildProjectName)</PackageId>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/kallebysantos/tailwind-dotnet</PackageProjectUrl>
+		<PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
+		<Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.7.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" PrivateAssets="All"/>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.7.2" PrivateAssets="all" ExcludeAssets="Runtime">
+			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 
-  <ItemGroup>
-    <Content Include="build/Tailwind.Hosting.props" PackagePath="/build" />
-    <Content Include="build/Tailwind.Hosting.targets" PackagePath="/build" />
-    <None Include="./README.md" Pack="true" PackagePath="\"/>
-  </ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" PrivateAssets="All"/>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" PrivateAssets="All"/>
+	</ItemGroup>
 
-  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
-      <ItemGroup><!-- The dependencies of your MSBuild task must be packaged inside the package, they cannot be expressed as normal PackageReferences -->
-          <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
-      </ItemGroup>
-  </Target><!-- This target adds the generated deps.json file to our package output -->
-  <Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
-      <ItemGroup>
-          <BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
-      </ItemGroup>
-  </Target>
+	<ItemGroup>
+		<Content Include="build/Tailwind.Hosting.props" PackagePath="/build" />
+		<Content Include="build/Tailwind.Hosting.targets" PackagePath="/build" />
+		<None Include="./README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<!-- The dependencies of your MSBuild task must be packaged inside the package, they cannot be expressed as normal PackageReferences -->
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+		</ItemGroup>
+	</Target>
+	<!-- This target adds the generated deps.json file to our package output -->
+	<Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
+		<ItemGroup>
+			<BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
+		</ItemGroup>
+	</Target>
 </Project>
