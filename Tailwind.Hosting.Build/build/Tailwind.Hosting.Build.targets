@@ -2,7 +2,7 @@
     <PropertyGroup Label="Tailwind.Hosting Properties">
         <_TailwindExecutableFolder>$(MSBuildProjectDirectory)/$(OutputPath)</_TailwindExecutableFolder>
         
-        <TailwindVersion Condition="'$(TailwindWatch)' == ''">latest</TailwindVersion>
+        <TailwindVersion Condition="'$(TailwindVersion)' == ''">latest</TailwindVersion>
         <TailwindWatch Condition="'$(TailwindWatch)' == ''">true</TailwindWatch>
 
         <TailwindInputCssFile Condition="'$(TailwindInputCssFile)' == ''">wwwroot/styles.css</TailwindInputCssFile>

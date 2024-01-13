@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Title>Tailwind.Hosting.Build</Title>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<GenerateDependencyFile>true</GenerateDependencyFile>
+		<DebugType>embedded</DebugType>
+		<DevelopmentDependency>true</DevelopmentDependency>
+		<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.7.2" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="build/Tailwind.Hosting.Build.props" PackagePath="/build" />
+		<Content Include="build/Tailwind.Hosting.Build.targets" PackagePath="/build" />
+		<None Include="./README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Tailwind.Hosting.Cli\Tailwind.Hosting.Cli.csproj" />
+	</ItemGroup>
+
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<!-- The dependencies of your MSBuild task must be packaged inside the package, they cannot be expressed as normal PackageReferences -->
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+		</ItemGroup>
+	</Target>
+	<!-- This target adds the generated deps.json file to our package output -->
+	<Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
+		<ItemGroup>
+			<BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
+		</ItemGroup>
+	</Target>
+</Project>

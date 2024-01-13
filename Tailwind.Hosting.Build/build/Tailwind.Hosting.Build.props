@@ -1,0 +1,11 @@
+<Project>
+	<PropertyGroup>
+		<TailwindHostingAssembly Condition="'$(TailwindHostingAssembly)' == ''">..\tasks\netstandard2.0\$(MSBuildThisFileName).dll</TailwindHostingAssembly>
+	</PropertyGroup>
+
+    <UsingTask 
+        TaskName="Tailwind.Hosting.Build.SetupExecutableTask" 
+        AssemblyFile="$(TailwindHostingAssembly)"
+    />
+</Project>
+
