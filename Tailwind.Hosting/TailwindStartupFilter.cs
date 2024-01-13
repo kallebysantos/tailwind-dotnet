@@ -2,6 +2,8 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
+using Tailwind.Hosting.Cli;
+
 namespace Tailwind.Hosting
 {
     internal sealed class TailwindStartupFilter : IStartupFilter
@@ -10,7 +12,8 @@ namespace Tailwind.Hosting
 
         public TailwindStartupFilter(TailwindManager tailwindManager)
         {
-            _tailwindManager = tailwindManager ?? throw new ArgumentNullException(nameof(tailwindManager));
+            _tailwindManager =
+                tailwindManager ?? throw new ArgumentNullException(nameof(tailwindManager));
         }
 
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)

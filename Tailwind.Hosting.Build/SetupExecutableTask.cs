@@ -3,7 +3,9 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Tailwind.Hosting;
+using Tailwind.Hosting.Cli;
+
+namespace Tailwind.Hosting.Build;
 
 public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
 {
@@ -16,8 +18,7 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
     public string? TailwindVersion { get; set; }
 
     public string TailwindExecutableDownloadUrl { get; set; } =
-    "https://github.com/tailwindlabs/tailwindcss/releases";
-
+        "https://github.com/tailwindlabs/tailwindcss/releases";
 
     public override bool Execute()
     {
@@ -36,9 +37,7 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
                 message: "Tailwindcss CLI is not available for your operating system."
             );
 
-
         var tailwindExecutableFilename = tailwindExecutableUrl.Split('/').Last();
-
 
         TailwindExecutablePath = Path.Combine(TailwindExecutableFolder, tailwindExecutableFilename);
 
@@ -52,10 +51,7 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
             return true;
         }
 
-        var downloadTask = TailwindManager.Download(
-            tailwindExecutableUrl,
-            TailwindExecutablePath
-        );
+        var downloadTask = TailwindManager.Download(tailwindExecutableUrl, TailwindExecutablePath);
 
         Log.LogMessage(
             importance: MessageImportance.High,
@@ -79,4 +75,3 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
         return downloadTask.Result != null;
     }
 }
-

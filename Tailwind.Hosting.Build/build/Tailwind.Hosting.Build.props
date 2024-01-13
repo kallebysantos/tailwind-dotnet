@@ -4,7 +4,7 @@
 	</PropertyGroup>
 
     <UsingTask 
-        TaskName="Tailwind.Hosting.SetupExecutableTask" 
+        TaskName="Tailwind.Hosting.Build.SetupExecutableTask" 
         AssemblyFile="$(TailwindHostingAssembly)"
     />
 </Project>
