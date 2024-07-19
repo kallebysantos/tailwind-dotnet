@@ -24,7 +24,7 @@ Then add the following to your `Properties/launchSettings.json`
     "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Tailwind.Hosting"
 }
 ```
-The available variables are:
+The available `MS build ` variables are:
 
 | Property | Value |
 |---|---|
@@ -33,3 +33,5 @@ The available variables are:
 | TailwindInputCssFile | {Project Folder}/wwwroot/styles.css |
 | TailwindOutputCssFile | {Project Folder}/wwwroot/app.css |
 | TailwindConfigFile | {Project Folder}/tailwind.config.js |
+
+> These variables shoud be placed in your `.csproj` file.
