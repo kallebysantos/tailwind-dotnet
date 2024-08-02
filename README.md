@@ -34,4 +34,4 @@ The available `MS build ` variables are:
 | TailwindOutputCssFile | {Project Folder}/wwwroot/app.css |
 | TailwindConfigFile | {Project Folder}/tailwind.config.js |
 
-> These variables shoud be placed in your `.csproj` file.
+> These variables can be overwritten from your `.csproj` file.
