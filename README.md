@@ -33,5 +33,7 @@ The available `MS build ` variables are:
 | TailwindInputCssFile | {Project Folder}/wwwroot/styles.css |
 | TailwindOutputCssFile | {Project Folder}/wwwroot/app.css |
 | TailwindConfigFile | {Project Folder}/tailwind.config.js |
+| TailwindMinifyOnPublish | true |
+| TailwindExcludeInputFileOnPublish | true |
 
-> These variables can be overwritten from your `.csproj` file.
+> These variables can be overwritten from your `.csproj` file, checkout the [Blazor example](examples/Blazor/Blazor.csproj)
