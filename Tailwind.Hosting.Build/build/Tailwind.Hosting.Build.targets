@@ -102,6 +102,9 @@
 
     <!--The generated file is deleted after a general clean. It will force the regeneration on rebuild-->
     <Target Name="AfterClean">
-		<Delete Files="$(_TailwindConfig)" />
-	</Target>
+        <ItemGroup>
+            <TailwindFilesToDelete Include="$(OutputPath)tailwind*"/>
+        </ItemGroup>
+        <Delete Files="@(TailwindFilesToDelete)"/>
+    </Target>
 </Project>
