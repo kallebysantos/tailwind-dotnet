@@ -13,7 +13,7 @@
 </p>
 
 ------
-- [Installation](installing-the-tailwindcss-integration)
+- [Installation](#installing-the-tailwindcss-integration)
 - [Condiguration](#condiguration)
 - [Examples](#examples)
 
