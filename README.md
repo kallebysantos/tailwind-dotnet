@@ -58,7 +58,7 @@ This last one is related with tailwind itself. Since `v4` you only need to add t
 @import "tailwindcss";
 ```
 
-## Condiguration
+## Configuration
 The Tailwind integration will automatically use the .Net convations and the available `MsBuild` variables are:
 | Property | Value |
 |---|---|
