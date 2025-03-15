@@ -9,12 +9,12 @@
 </p>
 
 <p align="center">
-  <a href="https://tailwindcss.com">Tailwindcss</a> Integration for .Net.
+   Unofficial <a href="https://tailwindcss.com">Tailwind CSS</a> Integration for .NET.
 </p>
 
 ------
 - [Installation](#installing-the-tailwindcss-integration)
-- [Condiguration](#condiguration)
+- [Configuration](#configuration)
 - [Examples](#examples)
 
 This repository haves a pack toolset for tailwindcss integration with .Net that is based in 2 main packages, one for Hosting Startup and other for MsBuild.
