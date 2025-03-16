@@ -60,6 +60,9 @@ public sealed class TailwindManager : IDisposable
             await httpClient.GetAsync(tailwindExecutableUrl)
         ).EnsureSuccessStatusCode();
 
+        // Ensure path exists
+        Directory.CreateDirectory(Path.GetDirectoryName(tailwindExecutablePath)!);
+
         using var fileStream = File.Create(tailwindExecutablePath);
         await response.Content.CopyToAsync(fileStream);
 
