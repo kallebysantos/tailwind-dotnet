@@ -2,7 +2,7 @@
     <PropertyGroup Label="Tailwind.Hosting Properties">
         <TailwindVersion Condition="'$(TailwindVersion)' == ''">latest</TailwindVersion>
         <TailwindWatch Condition="'$(TailwindWatch)' == ''">true</TailwindWatch>
-        <TailwindMinifyOnPublish Condition="'$(TailwindMinifyOnPublish)' == ''">true</TailwindMinifyOnPublish>
+        <TailwindMinifyOnPublish Condition="'$(TailwindMinifyOnPublish)' == '' AND '$(Configuration)' == 'Release'">true</TailwindMinifyOnPublish>
         <TailwindExcludeInputFileOnPublish Condition="'$(TailwindExcludeInputFileOnPublish)' == ''">true</TailwindExcludeInputFileOnPublish>
 
         <TailwindInputCssFile Condition="'$(TailwindInputCssFile)' == ''">wwwroot/styles.css</TailwindInputCssFile>
@@ -13,16 +13,36 @@
         <_TailwindConfig>$(OutputPath)tailwind.props.json</_TailwindConfig>
     </PropertyGroup>
 
+    <PropertyGroup Label="Tailwind.Hosting DependsOn">
+        <BuildDependsOn>
+            TailwindSetupExecutable;
+            TailwindGenerateOutput;
+            $(BuildDependsOn);
+        </BuildDependsOn>
+
+        <TailwindSetupExecutableDependsOn>
+            $(SetupExecutableDependsOn)
+            GetTargetPath;
+        </TailwindSetupExecutableDependsOn>
+
+        <TailwindGenerateOutputDependsOn>
+            $(GenerateOutputDependsOn)
+            TailwindSetupExecutable;
+        </TailwindGenerateOutputDependsOn>
+
+        <TailwindWriteHostingConfigDependsOn>
+            $(WriteHostingConfigDependsOn)
+            TailwindSetupExecutable;
+        </TailwindWriteHostingConfigDependsOn>
+    </PropertyGroup>
+
     <!--Download Tailwindcss executable-->
-    <Target
-            Name="SetupExecutableTask"
-            AfterTargets="Build"
-            Condition="!Exists('$(_TailwindExecutablePath)')"
-    >
+    <Target Name="TailwindSetupExecutable"
+            DependsOnTargets="$(TailwindSetupExecutableDependsOn)"
+            Condition="!Exists('$(_TailwindExecutablePath)')">
         <SetupExecutableTask
                 TailwindExecutableFolder="$(_TailwindExecutableFolder)"
-                TailwindVersion="$(TailwindVersion)"
-        >
+                TailwindVersion="$(TailwindVersion)" >
             <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
         </SetupExecutableTask>
 
@@ -30,13 +50,50 @@
             <Content
                     Include="$(_TailwindExecutablePath)"
                     CopyToOutputDirectory="PreserveNewest"
-                    CopyToPublishDirectory="Never"
-            />
+                    CopyToPublishDirectory="Never" />
         </ItemGroup>
     </Target>
 
-    <!--Create Tailwind configuration props file-->
-    <Target Name="WriteTailwindConfiguration" AfterTargets="SetupExecutableTask" DependsOnTargets="SetupExecutableTask">
+    <!-- Generates tailwind output on build-->
+    <Target Name="TailwindGenerateOutput"
+            AfterTargets="TailwindSetupExecutable"
+            Condition="Exists('$(_TailwindExecutablePath)')"
+            DependsOnTargets="$(TailwindGenerateOutputDependsOn)">
+        <PropertyGroup Label="Generation Properties">
+            <_TailwindBaseWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindBaseWorkingDirectory>
+            <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindWorkingDirectory>
+            <_TailwindExecutablePath>$([System.IO.Path]::Combine('$(_TailwindExecutablePath)'))</_TailwindExecutablePath>
+            <_TailwindInputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindInputCssFile)'))</_TailwindInputCssFile>
+            <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindOutputCssFile)'))</_TailwindOutputCssFile>
+            <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindConfigFile)'))</_TailwindTailwindConfigFile>
+
+            <_TailwindGenerateCommand>$(_TailwindExecutablePath) -c $(_TailwindTailwindConfigFile) -i $(_TailwindInputCssFile) -o $(_TailwindOutputCssFile)</_TailwindGenerateCommand>
+            <_TailwindGenerateCommand Condition="'$(Configuration)' == 'Release' AND '$(TailwindMinifyOnPublish)' == 'true'">
+                $(_TailwindGenerateCommand) --minify
+            </_TailwindGenerateCommand>
+        </PropertyGroup>
+        <Exec Command="$(_TailwindGenerateCommand)" WorkingDirectory="$(_TailwindBaseWorkingDirectory)"/>
+        <!-- Includes the generated file to project references
+         NOTE(kallebysantos): For .NET 9+ we need to make sure that this file is included before 'ResolveStaticWebAssetsInputs'
+         -->
+        <ItemGroup>
+            <!-- Removes old build cached file reference -->
+            <Content Remove="$(TailwindOutputCssFile)"/>
+
+            <Content Include="$(TailwindOutputCssFile)"
+                     CopyToPublishDirectory="Always"/>
+        </ItemGroup>
+    </Target>
+
+    <ItemGroup Condition="'$(TailwindExcludeInputFileOnPublish)' == 'true'">
+        <Content Remove="$(TailwindInputCssFile)" CopyToPublishDirectory="Never"/>
+        <None Remove="$(TailwindInputCssFile)" CopyToPublishDirectory="Never"/>
+    </ItemGroup>
+
+    <!--Create Tailwind.Hosting configuration file-->
+    <Target Name="TailwindWriteHostingConfig"
+            AfterTargets="Build"
+            DependsOnTargets="$(TailwindWriteHostingConfigDependsOn)">
         <PropertyGroup Label="Tailwind.Hosting Json Config File Properties">
             <_TailwindBaseWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindBaseWorkingDirectory>
             <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)').Replace('\','\\'))</_TailwindWorkingDirectory>
@@ -68,40 +125,8 @@
         </ItemGroup>
     </Target>
 
-    <!-- Generates a minified output on publish -->
-    <Target Name="GenerateMinifiedTailwindOutput"
-            AfterTargets="ComputeFilesToPublish"
-            Condition="Exists('$(_TailwindExecutablePath)') AND '$(TailwindMinifyOnPublish)' == 'true'"
-            DependsOnTargets="SetupExecutableTask">
-        <PropertyGroup Label="Tailwind.Hosting Generation Properties">
-            <_TailwindBaseWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindBaseWorkingDirectory>
-            <_TailwindWorkingDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(TailwindWorkingDirectory)'))</_TailwindWorkingDirectory>
-            <_TailwindExecutablePath>$([System.IO.Path]::Combine('$(_TailwindExecutablePath)'))</_TailwindExecutablePath>
-            <_TailwindInputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindInputCssFile)'))</_TailwindInputCssFile>
-            <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(OutputPath)', '$(TailwindOutputCssFile)'))</_TailwindOutputCssFile>
-            <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindConfigFile)'))</_TailwindTailwindConfigFile>
-
-            <_TailwindGenerateCommand>$(_TailwindExecutablePath) -m -c $(_TailwindTailwindConfigFile) -i $(_TailwindInputCssFile) -o $(_TailwindOutputCssFile)</_TailwindGenerateCommand>
-        </PropertyGroup>
-
-        <Exec Command="$(_TailwindGenerateCommand)" WorkingDirectory="$(_TailwindBaseWorkingDirectory)"/>
-
-        <ItemGroup>
-            <ResolvedFileToPublish Include="$(_TailwindOutputCssFile)">
-                <RelativePath>$(TailwindOutputCssFile)</RelativePath>
-                <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-                <ExcludeFromSingleFile>false</ExcludeFromSingleFile>
-            </ResolvedFileToPublish>
-        </ItemGroup>
-    </Target>
-
-    <ItemGroup Condition="'$(TailwindExcludeInputFileOnPublish)' == 'true'">
-        <Content Remove="$(TailwindInputCssFile)" CopyToPublishDirectory="Never"/>
-        <None Remove="$(TailwindInputCssFile)" CopyToPublishDirectory="Never"/>
-    </ItemGroup>
-
     <!--The generated file is deleted after a general clean. It will force the regeneration on rebuild-->
-    <Target Name="AfterClean">
+    <Target Name="_TailwindClean" AfterTargets="Clean">
         <ItemGroup>
             <TailwindFilesToDelete Include="$(OutputPath)tailwind*"/>
         </ItemGroup>
