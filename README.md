@@ -21,6 +21,9 @@ This repository haves a pack toolset for tailwindcss integration with .Net that 
 
 ## Getting Started
 
+> [!WARNING] 
+> **Windows users**: There's a bug in .NET 9 compiler, please [check this section](#windows-build-problems)
+
 ### Requirements:
 
 You only need .NET, nothing more! - No `npm` neither `postcss` stuff
@@ -83,6 +86,18 @@ All variables can be overwritten from `.csproj`
     <TailwindMinifyOnPublish>true</TailwindMinifyOnPublish>
     <TailwindExcludeInputFileOnPublish>true</TailwindExcludeInputFileOnPublish>
 </PropertyGroup>
+```
+
+## Windows build problems
+You may found a static web asset fingerprinting problem on windows, to avoid this please add the following lines to your `.csproj`.
+It could happens if you've installed the `.NET 9 cli` 
+
+```xml
+<Target Name="CleanUpTailwindStaticCache" BeforeTargets="PrepareForBuild" >
+    <ItemGroup>
+        <Content Remove="$(TailwindOutputCssFile)"/>
+    </ItemGroup>
+</Target>
 ```
 
 ## Examples
