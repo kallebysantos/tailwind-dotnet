@@ -14,11 +14,12 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Tailwind.Hosting DependsOn">
-        <BuildDependsOn>
+        <PrepareForBuildDependsOn>
             TailwindSetupExecutable;
+            TailwindPrepareForGenerateOutput;
             TailwindGenerateOutput;
-            $(BuildDependsOn);
-        </BuildDependsOn>
+            $(PrepareForBuildDependsOn);
+        </PrepareForBuildDependsOn>
 
         <TailwindSetupExecutableDependsOn>
             $(SetupExecutableDependsOn)
@@ -26,8 +27,9 @@
         </TailwindSetupExecutableDependsOn>
 
         <TailwindGenerateOutputDependsOn>
-            $(GenerateOutputDependsOn)
+            $(TailwindGenerateOutputDependsOn)
             TailwindSetupExecutable;
+            TailwindPrepareForGenerateOutput;
         </TailwindGenerateOutputDependsOn>
 
         <TailwindWriteHostingConfigDependsOn>
@@ -38,6 +40,7 @@
 
     <!--Download Tailwindcss executable-->
     <Target Name="TailwindSetupExecutable"
+            BeforeTargets="PrepareForBuild"
             DependsOnTargets="$(TailwindSetupExecutableDependsOn)"
             Condition="!Exists('$(_TailwindExecutablePath)')">
         <SetupExecutableTask
@@ -54,9 +57,16 @@
         </ItemGroup>
     </Target>
 
+    <!-- Ensures that cached output files are removed -->
+    <Target Name="TailwindPrepareForGenerateOutput" BeforeTargets="PrepareForBuild">
+        <ItemGroup>
+            <Content Remove="$(TailwindOutputCssFile)"/>
+        </ItemGroup>
+    </Target>
+
     <!-- Generates tailwind output on build-->
     <Target Name="TailwindGenerateOutput"
-            AfterTargets="TailwindSetupExecutable"
+            AfterTargets="TailwindPrepareForGenerateOutput"
             Condition="Exists('$(_TailwindExecutablePath)')"
             DependsOnTargets="$(TailwindGenerateOutputDependsOn)">
         <PropertyGroup Label="Generation Properties">
@@ -77,13 +87,11 @@
          NOTE(kallebysantos): For .NET 9+ we need to make sure that this file is included before 'ResolveStaticWebAssetsInputs'
          -->
         <ItemGroup>
-            <!-- Removes old build cached file reference -->
-            <Content Remove="$(TailwindOutputCssFile)"/>
-
             <Content Include="$(TailwindOutputCssFile)"
                      CopyToPublishDirectory="Always"/>
         </ItemGroup>
     </Target>
+
 
     <ItemGroup Condition="'$(TailwindExcludeInputFileOnPublish)' == 'true'">
         <Content Remove="$(TailwindInputCssFile)" CopyToPublishDirectory="Never"/>
