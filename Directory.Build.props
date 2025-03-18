@@ -1,6 +1,6 @@
 <Project>
   	<PropertyGroup Label="Package Properties">
-    	<Version>1.2.0</Version>
+    	<Version>1.2.2</Version>
 		<Authors>Kalleby Santos</Authors>
 		<Company>kallebysantos</Company>
 		<Product>$(MSBuildProjectName)</Product>
