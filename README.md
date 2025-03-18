@@ -88,4 +88,4 @@ All variables can be overwritten from `.csproj`
 ## Examples
 You can find more in `examples` folder:
 - [Blazor example](examples/Blazor/Blazor.csproj)
-
+- [.NET 9+ Static Assets Blazor example](examples/BlazorStaticAssets/BlazorStaticAssets.csproj)
