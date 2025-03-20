@@ -12,6 +12,9 @@
    Unofficial <a href="https://tailwindcss.com">Tailwind CSS</a> Integration for .NET.
 </p>
 
+> [!TIP]
+> Please [upvote it](https://github.com/tailwindlabs/tailwindcss.com/pull/2162) 👍  if you would like to help me turn this project as **official Framework Guide**, [live demo](https://tailwindcss-com-git-fork-kallebysantos-feat-b4ce7a-tailwindlabs.vercel.app/docs/installation/framework-guides/dotnet)
+
 ------
 - [Installation](#installing-the-tailwindcss-integration)
 - [Configuration](#configuration)
