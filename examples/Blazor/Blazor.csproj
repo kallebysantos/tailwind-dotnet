@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Tailwind.Hosting.Build Props">
-        <TailwindVersion>latest</TailwindVersion>
+        <TailwindVersion>v3.4.17</TailwindVersion>
         <TailwindWatch>true</TailwindWatch>
 
         <TailwindInputCssFile>wwwroot/styles.css</TailwindInputCssFile>
