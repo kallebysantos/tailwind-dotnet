@@ -101,6 +101,13 @@ It could happens if you've installed the `.NET 9 cli`
 ```
 
 ## Examples
+
+> [!NOTE]
+Although the examples bellow may explicitly use specific Tailwind CSS and .NET versions, this does not mean those are the only supported versions. This integration is compatible with both Tailwind CSS v3 and v4 across any .NET version.
+>
+> For a more detailed explanation, see https://github.com/kallebysantos/tailwind-dotnet/issues/10
+
 You can find more in `examples` folder:
-- [Blazor example](examples/Blazor/Blazor.csproj)
-- [.NET 9+ Static Assets Blazor example](examples/BlazorStaticAssets/BlazorStaticAssets.csproj)
+- [.NET 8 Blazor example](examples/Blazor/Blazor.csproj) (tailwind v3)
+- [.NET 9+ Static Assets Blazor example](examples/BlazorStaticAssets/BlazorStaticAssets.csproj) (tailwind v4)
+
