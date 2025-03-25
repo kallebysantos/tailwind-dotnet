@@ -16,11 +16,18 @@
 > Please [upvote it](https://github.com/tailwindlabs/tailwindcss.com/pull/2162) 👍  if you would like to help me turn this project as **official Framework Guide**, [live demo](https://tailwindcss-com-git-fork-kallebysantos-feat-b4ce7a-tailwindlabs.vercel.app/docs/installation/framework-guides/dotnet)
 
 ------
+- [Core features](#core-features)
 - [Installation](#installing-the-tailwindcss-integration)
 - [Configuration](#configuration)
 - [Examples](#examples)
 
 This repository haves a pack toolset for tailwindcss integration with .Net that is based in 2 main packages, one for Hosting Startup and other for MsBuild.
+
+## Core features
+- No external requirements, like NodeJs or Postcss
+- Integrated hot-reload, it works with dotnet watch as well most common IDEs(Visual Studio and Rider)
+- Minified output on publish
+- .NET 9+ static asset compression
 
 ## Getting Started
 
