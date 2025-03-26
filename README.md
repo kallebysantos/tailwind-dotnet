@@ -120,4 +120,5 @@ Although the examples bellow may explicitly use specific Tailwind CSS and .NET v
 You can find more in `examples` folder:
 - [.NET 8 Blazor example](examples/Blazor/Blazor.csproj) (tailwind v3)
 - [.NET 9+ Static Assets Blazor example](examples/BlazorStaticAssets/BlazorStaticAssets.csproj) (tailwind v4)
+- [.NET 4.8 WebForms example](examples/WebForms) (tailwind v4)
 
