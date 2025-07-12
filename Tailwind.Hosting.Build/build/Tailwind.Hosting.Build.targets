@@ -9,7 +9,7 @@
         <TailwindOutputCssFile Condition="'$(TailwindOutputCssFile)' == ''">wwwroot/app.css</TailwindOutputCssFile>
         <TailwindConfigFile Condition="'$(TailwindConfigFile)' == ''">tailwind.config.js</TailwindConfigFile>
 
-        <_TailwindExecutableFolder>$(MSBuildProjectDirectory)/$(OutputPath)</_TailwindExecutableFolder>
+		<_TailwindExecutableFolder>$(TargetDir)</_TailwindExecutableFolder>
         <_TailwindConfig>$(OutputPath)tailwind.props.json</_TailwindConfig>
     </PropertyGroup>
 
