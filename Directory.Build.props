@@ -1,19 +1,19 @@
 <Project>
-  	<PropertyGroup Label="Package Properties">
-    	<Version>1.2.2</Version>
-		<Authors>Kalleby Santos</Authors>
-		<Company>kallebysantos</Company>
-		<Product>$(MSBuildProjectName)</Product>
-		<PackageId>$(MSBuildProjectName)</PackageId>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/kallebysantos/tailwind-dotnet</PackageProjectUrl>
-		<PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
-		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
-		<Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
-  	</PropertyGroup>
+  <PropertyGroup Label="Package Properties">
+    <Version>1.2.3</Version>
+    <Authors>Kalleby Santos</Authors>
+    <Company>kallebysantos</Company>
+    <Product>$(MSBuildProjectName)</Product>
+    <PackageId>$(MSBuildProjectName)</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kallebysantos/tailwind-dotnet</PackageProjectUrl>
+    <PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Tailwind;Tools;Hosting;Css;Frontend</PackageTags>
+    <Description>Helpers for launching the Tailwindcss automatically when the application starts in ASP.NETCore.</Description>
+  </PropertyGroup>
 
 	<PropertyGroup Label="Build Properties">
 		<LangVersion>preview</LangVersion>
