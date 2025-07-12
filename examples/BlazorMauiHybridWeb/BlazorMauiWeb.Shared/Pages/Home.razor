@@ -1,0 +1,14 @@
+﻿@page "/"
+@using BlazorMauiWeb.Shared.Services
+@inject IFormFactor FormFactor
+
+<PageTitle>Home</PageTitle>
+
+<h1 class="text-blue-500 text-2xl">Hello, world!</h1>
+
+Welcome to your new app running on <em>@factor</em> using <em>@platform</em>.
+
+@code {
+  private string factor => FormFactor.GetFormFactor();
+  private string platform => FormFactor.GetPlatform();
+}

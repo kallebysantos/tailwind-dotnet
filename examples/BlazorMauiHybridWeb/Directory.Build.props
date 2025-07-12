@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+
+	<PropertyGroup>
+    <NupkgsDirectory>../../../nupkgs</NupkgsDirectory>
+		<RestoreAdditionalProjectSources>$(NupkgsDirectory)</RestoreAdditionalProjectSources>
+		<PackageOutputPath>$(NupkgsDirectory)</PackageOutputPath>
+	</PropertyGroup>
+</Project>
