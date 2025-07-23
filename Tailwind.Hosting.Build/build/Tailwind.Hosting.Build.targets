@@ -77,7 +77,7 @@
             <_TailwindOutputCssFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindOutputCssFile)'))</_TailwindOutputCssFile>
             <_TailwindTailwindConfigFile>$([System.IO.Path]::Combine('$(_TailwindBaseWorkingDirectory)', '$(TailwindConfigFile)'))</_TailwindTailwindConfigFile>
 
-            <_TailwindGenerateCommand>$(_TailwindExecutablePath) -c $(_TailwindTailwindConfigFile) -i $(_TailwindInputCssFile) -o $(_TailwindOutputCssFile)</_TailwindGenerateCommand>
+            <_TailwindGenerateCommand>"$(_TailwindExecutablePath)" -c "$(_TailwindTailwindConfigFile)" -i "$(_TailwindInputCssFile)" -o "$(_TailwindOutputCssFile)"</_TailwindGenerateCommand>
             <_TailwindGenerateCommand Condition="'$(Configuration)' == 'Release' AND '$(TailwindMinifyOnPublish)' == 'true'">
                 $(_TailwindGenerateCommand) --minify
             </_TailwindGenerateCommand>
