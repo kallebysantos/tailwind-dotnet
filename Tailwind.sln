@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tailwind.Hosting.Cli", "Tai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorStaticAssets", "examples\BlazorStaticAssets\BlazorStaticAssets.csproj", "{AC4BA667-509A-448A-8A5E-C4B0B8CC4B13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNet10", "examples\BlazorNet10\BlazorNet10.csproj", "{041D431A-6045-4ABC-87FA-9CD162C682E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{AC4BA667-509A-448A-8A5E-C4B0B8CC4B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC4BA667-509A-448A-8A5E-C4B0B8CC4B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC4BA667-509A-448A-8A5E-C4B0B8CC4B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041D431A-6045-4ABC-87FA-9CD162C682E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041D431A-6045-4ABC-87FA-9CD162C682E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041D431A-6045-4ABC-87FA-9CD162C682E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041D431A-6045-4ABC-87FA-9CD162C682E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7358A5E5-68A2-4767-8FEF-F10886ACAD47} = {5D8C1823-0A68-4E21-901F-1EB2F497299F}
