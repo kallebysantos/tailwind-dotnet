@@ -122,14 +122,12 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
             if (downloadTask.IsFaulted)
             {
                 Log.LogErrorFromException(downloadTask.Exception);
-                TryDeleteFile(tempFilePath);
                 return false;
             }
 
             if (downloadTask.Result == null)
             {
                 Log.LogError("Tailwind CLI download returned no result");
-                TryDeleteFile(tempFilePath);
                 return false;
             }
 
@@ -147,7 +145,6 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
         catch (Exception ex)
         {
             Log.LogErrorFromException(ex);
-            TryDeleteFile(tempFilePath);
             return false;
         }
         finally
@@ -163,20 +160,5 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
         var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(normalizedPath));
         var hashString = BitConverter.ToString(hash).Replace("-", "");
         return $"Global\\TailwindCli_{hashString}";
-    }
-
-    private static void TryDeleteFile(string filePath)
-    {
-        try
-        {
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
-        catch
-        {
-            // Ignore
-        }
     }
 }
