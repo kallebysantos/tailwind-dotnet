@@ -9,7 +9,8 @@
         <TailwindOutputCssFile Condition="'$(TailwindOutputCssFile)' == ''">wwwroot/app.css</TailwindOutputCssFile>
         <TailwindConfigFile Condition="'$(TailwindConfigFile)' == ''">tailwind.config.js</TailwindConfigFile>
 
-		<_TailwindExecutableFolder>$(TargetDir)</_TailwindExecutableFolder>
+		<_TailwindExecutableFolder Condition="'$(TailwindExecutableFolder)' != ''">$(TailwindExecutableFolder)</_TailwindExecutableFolder>
+		<_TailwindExecutableFolder Condition="'$(TailwindExecutableFolder)' == ''">$(TargetDir)</_TailwindExecutableFolder>
         <_TailwindConfig>$(OutputPath)tailwind.props.json</_TailwindConfig>
     </PropertyGroup>
 
@@ -49,7 +50,7 @@
             <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
         </SetupExecutableTask>
 
-        <ItemGroup>
+        <ItemGroup Condition="'$(TailwindExecutableFolder)' == ''">
             <Content
                     Include="$(_TailwindExecutablePath)"
                     CopyToOutputDirectory="PreserveNewest"
