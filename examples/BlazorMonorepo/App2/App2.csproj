@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Tailwind.Hosting.Build Props">
+        <TailwindWatch>true</TailwindWatch>
+
+        <TailwindInputCssFile>wwwroot/styles.css</TailwindInputCssFile>
+        <TailwindOutputCssFile>wwwroot/app.css</TailwindOutputCssFile>
+        <TailwindConfigFile>tailwind.config.js</TailwindConfigFile>
+
+        <TailwindMinifyOnPublish>true</TailwindMinifyOnPublish>
+        <TailwindExcludeInputFileOnPublish>true</TailwindExcludeInputFileOnPublish>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Tailwind.Hosting\Tailwind.Hosting.csproj" />
+    </ItemGroup>
+
+    <!--
+        Local development imports: replaces the NuGet-provided props/targets.
+        Development.props loads the task DLL from the build output (bin/) instead of the NuGet tasks/ folder.
+        See Tailwind.Hosting.Build.Development.props for details.
+    -->
+    <Import Project="..\..\..\Tailwind.Hosting.Build\Tailwind.Hosting.Build.Development.props" />
+    <Import Project="..\..\..\Tailwind.Hosting.Build\build\Tailwind.Hosting.Build.targets" />
+</Project>

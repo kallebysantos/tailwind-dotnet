@@ -1,0 +1,20 @@
+<!--
+    Shared build properties for the monorepo example.
+    All projects under this directory inherit these settings.
+
+    TailwindExecutableFolder points both App1 and App2 to a single shared tools/ directory,
+    so the Tailwind CLI is downloaded once and reused. Concurrent builds are coordinated
+    via a global mutex in SetupExecutableTask to prevent download conflicts.
+-->
+<Project>
+    <PropertyGroup Label="Shared Tailwind.Hosting.Build Props">
+        <TailwindExecutableFolder>$(MSBuildThisFileDirectory)tools\</TailwindExecutableFolder>
+        <TailwindVersion>latest</TailwindVersion>
+    </PropertyGroup>
+	
+	<Target Name="CleanUpTailwindStaticCache" BeforeTargets="PrepareForBuild" >
+		<ItemGroup>
+			<Content Remove="$(TailwindOutputCssFile)"/>
+		</ItemGroup>
+	</Target>
+</Project>

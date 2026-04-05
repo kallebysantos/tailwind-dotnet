@@ -1,0 +1,31 @@
+<!--
+    Development-only props for local testing of Tailwind.Hosting.Build MSBuild tasks.
+
+    When consumed via NuGet, the UsingTask in build/Tailwind.Hosting.Build.props points to
+    the packaged tasks/ folder. That path doesn't exist during local development, so this
+    file provides an alternative that resolves the task DLL from the project's bin/ output.
+
+    Usage (in example/test .csproj files):
+        <Import Project="path/to/Tailwind.Hosting.Build.Development.props" />
+        <Import Project="path/to/build/Tailwind.Hosting.Build.targets" />
+
+    TaskHostFactory runs the task in a separate process, preventing assembly locking issues
+    when the task project is rebuilt between builds of the consuming project.
+-->
+<Project>
+    <PropertyGroup>
+        <_TailwindBuildTaskDir>$(MSBuildThisFileDirectory)</_TailwindBuildTaskDir>
+        <_TailwindBuildTaskAssembly>$(_TailwindBuildTaskDir)bin\$(Configuration)\netstandard2.0\Tailwind.Hosting.Build.dll</_TailwindBuildTaskAssembly>
+    </PropertyGroup>
+
+    <!-- Ensures the task project is built before the consuming project, without adding a runtime dependency -->
+    <ItemGroup>
+        <ProjectReference Include="$(_TailwindBuildTaskDir)Tailwind.Hosting.Build.csproj" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <UsingTask
+        TaskName="Tailwind.Hosting.Build.SetupExecutableTask"
+        AssemblyFile="$(_TailwindBuildTaskAssembly)"
+        TaskFactory="TaskHostFactory"
+    />
+</Project>
