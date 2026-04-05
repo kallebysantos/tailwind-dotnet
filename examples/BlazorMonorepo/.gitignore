@@ -1,4 +1,5 @@
 wwwroot/app.css
+tailwind.props.json
 tools/*
 !tools/.gitkeep
 
