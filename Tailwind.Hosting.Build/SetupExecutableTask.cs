@@ -56,8 +56,6 @@ public class SetupExecutableTask : Microsoft.Build.Utilities.Task, ITask
             return true;
         }
 
-        Directory.CreateDirectory(TailwindExecutableFolder);
-
         var mutexName = CreateMutexName(TailwindExecutablePath);
         using var mutex = new Mutex(false, mutexName, out var createdNew);
 
