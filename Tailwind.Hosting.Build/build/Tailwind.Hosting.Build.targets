@@ -41,11 +41,11 @@
     <!--Download Tailwindcss executable-->
     <Target Name="TailwindSetupExecutable"
             BeforeTargets="PrepareForBuild"
-            DependsOnTargets="$(TailwindSetupExecutableDependsOn)"
-            Condition="!Exists('$(_TailwindExecutablePath)')">
+            DependsOnTargets="$(TailwindSetupExecutableDependsOn)">
         <SetupExecutableTask
                 TailwindExecutableFolder="$(_TailwindExecutableFolder)"
-                TailwindVersion="$(TailwindVersion)" >
+                TailwindVersion="$(TailwindVersion)"
+            	Condition="!Exists('$(_TailwindExecutablePath)')">
             <Output TaskParameter="TailwindExecutablePath" PropertyName="_TailwindExecutablePath"/>
         </SetupExecutableTask>
 
